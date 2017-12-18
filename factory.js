@@ -27,8 +27,9 @@ function factory(fn) {
       Object.keys(pivoted).forEach(function (key) {
         if (key == seqKey) return
         aggregated[key] = fn.call(null, pivoted[key], option)
-        aggregated["_records"].push(pivoted);
       })
+      
+      aggregated["_records"] = record.set;
       return aggregated
     })
 

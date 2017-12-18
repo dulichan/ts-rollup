@@ -1,33 +1,52 @@
 var spigot = require("stream-spigot")
-var agg = require("../aggregates")
+var rollup = require("../index").rollup;
 var concat = require("concat-stream")
 
-function series() {
-  return spigot({objectMode: true}, [
-    {time: 1378511041582, speed: 1, odometer: 0,   fuel: 100},
-    {time: 1378512141582, speed: 4, odometer: 11,  fuel: 98},
-    {time: 1378513241582, speed: 3, odometer: 22,  fuel: 97},
-    {time: 1378514341582, speed: 25, odometer: 99,  fuel: 76},
-    {time: 1378515441582, speed: 50, odometer: 155, fuel: 70},
-    {time: 1378516541582, speed: 50, odometer: 241, fuel: 62},
-    {time: 1378517641582, speed: 122, odometer: 755, fuel: 18},
-    {time: 1378518741582, speed: 31, odometer: 780, fuel: 15},
-    {time: 1378519841582, speed: 0, odometer: 780, fuel: 15},
-  ])
-}
 
-series()
-  .pipe(agg.sum("time"))
-  .pipe(concat(console.log))
+var tData = [
+  {time: 1378511041582, speed: 1, odometer: 0,   fuel: 100},
+  {time: 1378512141582, speed: 4, odometer: 11,  fuel: 98},
+  {time: 1378513241582, speed: 3, odometer: 22,  fuel: 97},
+  {time: 1378514341582, speed: 25, odometer: 99,  fuel: 76},
+  {time: 1378515441582, speed: 50, odometer: 155, fuel: 70},
+  {time: 1378516541582, speed: 50, odometer: 241, fuel: 62},
+  {time: 1378517641582, speed: 122, odometer: 755, fuel: 18},
+  {time: 1378518741582, speed: 31, odometer: 780, fuel: 15},
+  {time: 1378519841582, speed: 0, odometer: 780, fuel: 15},
+];
+
+rollup({
+  data: tData,
+  timestampField: "time",
+  fcn: "sum",
+  interval: "hour",
+  indicateGenerated: "generated",
+  // tz: "America/Los_Angeles",
+  fill: 0,
+}).then(function(data){
+  console.log(data);
+});
+// series()
+//   .pipe(agg.sum("time"))
+//   .pipe(concat(console.log))
 
 /*
 [ { time: 0, speed: 286, odometer: 2843, fuel: 551 } ]
  */
 
-series()
-  .pipe(agg.sum("time", "hour"))
-  .pipe(concat(console.log))
+// series()
+//   .pipe(agg.sum("time", "hour"))
+//   .pipe(concat(function(a) {
+//     console.log(JSON.stringify(a));
+//   }))
 
+// series()
+// .pipe(agg.func(function(b){
+//   console.log(b);
+// })("time", "hour"))
+// .pipe(concat(function(a) {
+//   console.log(JSON.stringify(a));
+// }))
 /*
 [ { time: 1378508400000, speed: 1, odometer: 0, fuel: 100 },
   { time: 1378512000000, speed: 82, odometer: 287, fuel: 341 },
@@ -35,9 +54,9 @@ series()
   { time: 1378519200000, speed: 0, odometer: 780, fuel: 15 } ]
  */
 
-series()
-  .pipe(agg.mean("time", "hour"))
-  .pipe(concat(console.log))
+// series()
+//   .pipe(agg.mean("time", "hour"))
+//   .pipe(concat(console.log))
 
 /*
 [ { time: 1378508400000, speed: 1, odometer: 0, fuel: 100 },

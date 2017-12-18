@@ -9,6 +9,9 @@ module.exports.variance = factory(stats.variance)
 module.exports.stdev = factory(stats.stdev)
 module.exports.percentile = factory(stats.percentile)
 
+module.exports.func = function(func){
+  return factory(func);
+}
 module.exports.min = factory(function (vals) { return Math.min.apply(null, vals) })
 module.exports.max = factory(function (vals) { return Math.max.apply(null, vals) })
 module.exports.count = factory(function (vals) { return vals.length })

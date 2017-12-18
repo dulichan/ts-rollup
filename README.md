@@ -1,7 +1,7 @@
-timestream-aggregates
+ts-rollup
 =====
 
-[![NPM](https://nodei.co/npm/timestream-aggregates.png)](https://nodei.co/npm/timestream-aggregates/)
+Inspired by - https://nodei.co/npm/timestream-aggregates/ 
 
 Aggregation functions for objectMode streams. Contains a set of stream Transforms that accept objectMode streams with a sequenceKey and aggregate all other values of each record into chunks at regular intervals.
 
